@@ -1,0 +1,42 @@
+parameters:
+  chartName: ''
+  chartPath: ''
+  chartTestingVersion: 3.5.1
+  helmVersion: 3.8.1
+
+steps:
+- bash: |
+    docker run --network host --workdir=/data --volume $(Build.SourcesDirectory):/data quay.io/helmpack/chart-testing:v${{ parameters.chartTestingVersion }} ct lint --config ct.yaml
+  displayName: Run chart-testing (lint)
+
+- bash: |
+    export DESIRED_VERSION=v${{ parameters.helmVersion }}
+    curl -sf https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 | bash
+    helm version
+  displayName: Install Helm v${{ parameters.helmVersion }}
+
+- bash: |
+    helm dependency update ${{ parameters.chartPath }}${{ parameters.chartName }}
+  displayName: Update dependencies from library chart (tpm-library)
+
+- bash: |
+    helm template chart-testing ${{ parameters.chartPath }}${{ parameters.chartName }} \
+    --debug \
+    --namespace integration-test
+  displayName: Render templates from library chart (tpm-library) and display output
+
+# - bash: |
+#     bash -f ./tests/start.sh \
+#       --kind-cluster-config=$(Build.SourcesDirectory)/tests/kind-config.yaml
+#   displayName: Download dependencies and create kind cluster
+
+# - bash: |
+#     bash -f ./tests/deploy.sh \
+#       --helm-chart-path=$(Build.SourcesDirectory)/tests/chart-testing \
+#       --helm-chart-release-name=chart-testing \
+#       --kubectl-check-services=chart-testing
+#   displayName: Test chart install on kind cluster
+
+# - bash: |
+#     bash -f ./tests/stop.sh
+#   displayName: Delete kind cluster
