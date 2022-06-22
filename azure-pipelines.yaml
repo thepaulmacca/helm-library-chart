@@ -7,6 +7,9 @@ trigger:
     include: 
     - charts/tpm-library/*
 
+pr:
+  - main
+
 pool:
   vmImage: ubuntu-latest
 
