@@ -1,7 +1,7 @@
 {{/*
 Expand the name of the chart.
 */}}
-{{- define "tpm-library.fullname" -}}
+{{- define "tpm-library.name" -}}
 {{- default .Chart.Name .Values.nameOverride | trunc 63 | trimSuffix "-" }}
 {{- end }}
 
@@ -46,6 +46,6 @@ app.kubernetes.io/managed-by: {{ .Release.Service }}
 Selector labels
 */}}
 {{- define "tpm-library.selector-labels" -}}
-app.kubernetes.io/name: {{ include "tpm-library.fullname" . }}
+app.kubernetes.io/name: {{ include "tpm-library.name" . }}
 app.kubernetes.io/instance: {{ .Release.Name }}
 {{- end }}
