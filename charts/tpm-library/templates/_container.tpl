@@ -5,16 +5,21 @@ Renders the container objects required by the chart
 - name: {{ include "tpm-library.fullname" . }}
   image: "{{ .Values.image.name }}:{{ .Values.image.tag }}"
   imagePullPolicy: {{ .Values.image.pullPolicy }}
-  env:
-  {{- if .Values.env }}
-  {{- range $key, $value := .Values.env }}
-  - name: {{ $key }}
-    value: {{ $value | quote }}
-  {{- end }}
   ports:
-  - name: http
-    containerPort: {{ .Values.deployment.containerPort }}
-    protocol: TCP
+    - name: http
+      containerPort: {{ .Values.deployment.containerPort }}
+      protocol: TCP
+  {{- if .Values.env }}
+  env:
+    {{- range $key, $value := .Values.env }}
+    - name: {{ $key }}
+      value: {{ $value | quote }}
+    {{- end }}
+  {{- end }}
+  {{- if .Values.resources }}
+  resources: 
+    {{- toYaml .Values.resources | nindent 4 }}
+  {{- end }}
   {{- if .Values.livenessProbe.enabled }}
   livenessProbe:
     httpGet:
@@ -33,8 +38,6 @@ Renders the container objects required by the chart
     successThreshold: {{ .Values.readinessProbe.successThreshold }}
     periodSeconds: {{ .Values.readinessProbe.periodSeconds }}
   {{- end }}
-  resources:
-    {{- toYaml .Values.resources | nindent 12 }}
 {{- end -}}
 {{- define "tpm-library.container" -}}
 {{- include "tpm-library.util.merge" (append . "tpm-library.container.tpl") -}}
