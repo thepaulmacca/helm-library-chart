@@ -1,4 +1,6 @@
-replicas: 1
+# Default values for tpm-library-testing.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
 
 image:
   name: httpd
@@ -20,8 +22,19 @@ service:
 
 ingress:
   enabled: true
-  annotations: {}
-  ingressClassName: nginx
+  className: nginx
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: '/'
+  rules:
+  - http:
+      paths:
+      - path: /tpm-library-testing-ingress
+        pathType: Prefix
+        backend:
+          service:
+            name: tpm-library-testing-service
+            port:
+              number: 80
 
 env:
   A_KEY: A_VALUE
@@ -53,5 +66,6 @@ resources:
 
 autoscaling:
   enabled: true
+  minReplicas: 1
   maxReplicas: 3
   targetCPUUtilizationPercentage: 80
