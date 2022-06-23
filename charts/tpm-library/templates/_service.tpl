@@ -15,7 +15,7 @@ spec:
     targetPort: {{ .Values.service.targetPort }}
     protocol: TCP
   selector:
-    {{- include "testing.selectorLabels" . | nindent 4 }}
+    {{- include "tpm-library.selector-labels" . | nindent 4 }}
 {{- end -}}
 {{- define "tpm-library.service" -}}
 {{- include "tpm-library.util.merge" (append . "tpm-library.service.tpl") -}}
