@@ -43,5 +43,5 @@ stages:
       steps:
       - template: .azure-pipelines/templates/steps/lint-test.yaml
         parameters:
-          chartName: chart-testing
+          chartName: tpm-library-testing
           chartPath: $(Build.SourcesDirectory)/tests/
