@@ -1,6 +1,0 @@
-dependencies:
-- name: tpm-library
-  repository: file://../../charts/tpm-library
-  version: 0.1.0
-digest: sha256:f23ba5044215f2d91a60f5953a8b3a32d30ed89c7010d4ca974ce52c8967aab5
-generated: "2022-06-23T23:27:50.2848655+01:00"
