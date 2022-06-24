@@ -15,7 +15,10 @@ steps:
       --workdir=/data \
       --volume $(Build.SourcesDirectory):/data \
       quay.io/helmpack/chart-testing:v${{ parameters.chartTestingVersion }} \
-      ct list-changed --config ct.yaml
+      changed=$(ct list-changed --config ct.yaml)
+      if [[ -n "$changed" ]]; then
+        echo "##vso[task.setvariable variable=changed]true"
+      fi
   displayName: Run chart-testing (list-changed)
 
 - bash: |
