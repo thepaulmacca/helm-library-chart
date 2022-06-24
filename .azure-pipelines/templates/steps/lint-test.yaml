@@ -7,14 +7,14 @@ parameters:
 steps:
 - bash: |
     docker pull quay.io/helmpack/chart-testing:v${{ parameters.chartTestingVersion }}
-  displayName: Pull helmpack/chart-testing docker image
+  displayName: Pull quay.io/helmpack/chart-testing docker image
 
 - bash: |
     docker run \
       --network host \
       --workdir=/data \
       --volume $(Build.SourcesDirectory):/data \
-      helmpack/chart-testing:v${{ parameters.chartTestingVersion }} \
+      quay.io/helmpack/chart-testing:v${{ parameters.chartTestingVersion }} \
       ct list-changed --config ct.yaml
   displayName: Run chart-testing (list-changed)
 
@@ -23,7 +23,7 @@ steps:
       --network host \
       --workdir=/data \
       --volume $(Build.SourcesDirectory):/data \
-      helmpack/chart-testing:v${{ parameters.chartTestingVersion }} \
+      quay.io/helmpack/chart-testing:v${{ parameters.chartTestingVersion }} \
       ct lint --config ct.yaml
   displayName: Run chart-testing (lint)
 
