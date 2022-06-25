@@ -10,19 +10,12 @@ steps:
   displayName: Pull quay.io/helmpack/chart-testing docker image
 
 - bash: |
-    ct version
-  displayName: Get chart-testing version
-
-- bash: |
     docker run \
       --network host \
       --workdir=/data \
       --volume $(Build.SourcesDirectory):/data \
       quay.io/helmpack/chart-testing:v${{ parameters.chartTestingVersion }} \
-      changed=$(ct list-changed --config ct.yaml)
-      if [[ -n "$changed" ]]; then
-        echo "##vso[task.setvariable variable=changed]true"
-      fi
+      ct list-changed --config ct.yaml
   displayName: Run chart-testing (list-changed)
 
 - bash: |
