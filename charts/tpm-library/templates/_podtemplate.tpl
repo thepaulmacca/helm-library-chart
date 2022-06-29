@@ -5,6 +5,9 @@ Create pod template spec.
 template:
   metadata:
     labels:
+      {{- if .Values.azureIdentity }}
+      aadpodidbinding: {{ include "tpm-library.name" . }}-pod-identity-selector
+      {{- end }}
       {{- include "tpm-library.selector-labels" . | nindent 8 }}
   spec:
     containers:

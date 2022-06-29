@@ -27,21 +27,19 @@ steps:
       ct lint --config ct.yaml
   displayName: Run chart-testing (lint)
 
-# - bash: |
-#     export DESIRED_VERSION=v${{ parameters.helmVersion }}
-#     curl -sf https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 | bash
-#     helm version
-#   displayName: Install helm v${{ parameters.helmVersion }}
+- bash: |
+    export DESIRED_VERSION=v${{ parameters.helmVersion }}
+    curl -sf https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 | bash
+    helm version
+  displayName: Install helm v${{ parameters.helmVersion }}
 
-# - bash: |
-#     helm dependency update ${{ parameters.chartPath }}${{ parameters.chartName }}
-#   displayName: Update ${{ parameters.chartName }} chart dependencies
+- bash: |
+    helm dependency update ${{ parameters.chartPath }}${{ parameters.chartName }}
+  displayName: Update ${{ parameters.chartName }} chart dependencies
 
-# - bash: |
-#     helm template chart-testing ${{ parameters.chartPath }}${{ parameters.chartName }} \
-#     --debug \
-#     --namespace integration-test
-#   displayName: Render ${{ parameters.chartName }} chart templates and display output
+- bash: |
+    helm template chart-testing ${{ parameters.chartPath }}${{ parameters.chartName }} --debug
+  displayName: Render ${{ parameters.chartName }} chart templates and display output
 
 # - bash: |
 #     bash -f ./tests/start.sh \
