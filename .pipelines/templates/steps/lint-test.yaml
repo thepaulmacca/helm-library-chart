@@ -10,16 +10,12 @@ steps:
   displayName: Pull quay.io/helmpack/chart-testing docker image
 
 - bash: |
-    changed=$(ct list-changed --config ct.yaml)
-
     docker run \
       --network host \
       --workdir=/data \
       --volume $(Build.SourcesDirectory):/data \
       quay.io/helmpack/chart-testing:v${{ parameters.chartTestingVersion }} \
-      if [[ -n "$changed" ]]; then
-        echo "chart has been changed"
-      fi
+      ct list-changed --config ct.yaml
   displayName: Run chart-testing (list-changed)
 
 - bash: |
