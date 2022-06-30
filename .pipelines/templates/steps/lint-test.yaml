@@ -38,7 +38,7 @@ steps:
   displayName: Update ${{ parameters.chartName }} chart dependencies
 
 - bash: |
-    helm template chart-testing ${{ parameters.chartPath }}${{ parameters.chartName }} --debug
+    helm template tpm-library-testing ${{ parameters.chartPath }}${{ parameters.chartName }} --debug
   displayName: Render ${{ parameters.chartName }} chart templates and display output
 
 # - bash: |
