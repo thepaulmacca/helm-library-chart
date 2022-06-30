@@ -5,7 +5,7 @@ Renders the Azure Identity objects required by the chart
 apiVersion: "aadpodidentity.k8s.io/v1"
 kind: AzureIdentity
 metadata:
-  name: {{ include "tpm-library.name" . }}-pod-identity
+  name: {{ include "tpm-library.fullname" . }}-azure-identity
 spec:
   type: 0
   resourceID: {{ .Values.azureIdentity.resourceID }}

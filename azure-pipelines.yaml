@@ -41,7 +41,7 @@ stages:
     - job: LintTestChart
       displayName: Lint and Test Helm Chart
       steps:
-      - template: .azure-pipelines/templates/steps/lint-test.yaml
+      - template: .pipelines/templates/steps/lint-test.yaml
         parameters:
           chartName: tpm-library-testing
           chartPath: $(Build.SourcesDirectory)/tests/

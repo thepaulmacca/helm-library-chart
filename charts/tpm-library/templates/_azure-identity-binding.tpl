@@ -5,10 +5,10 @@ Renders the Azure Identity Binding objects required by the chart
 apiVersion: "aadpodidentity.k8s.io/v1"
 kind: AzureIdentityBinding
 metadata:
-  name: {{ include "tpm-library.name" . }}-pod-identity-binding
+  name: {{ include "tpm-library.fullname" . }}-azure-identity-binding
 spec:
-  azureIdentity: {{ include "tpm-library.name" . }}-pod-identity
-  selector: {{ include "tpm-library.name" . }}-pod-identity-selector
+  azureIdentity: {{ include "tpm-library.fullname" . }}-azure-identity
+  selector: {{ include "tpm-library.fullname" . }}-azure-identity-selector
 {{- end -}}
 {{- define "tpm-library.azure-identity-binding" -}}
 {{- include "tpm-library.util.merge" (append . "tpm-library.azure-identity-binding.tpl") -}}
