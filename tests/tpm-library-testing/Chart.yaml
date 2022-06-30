@@ -1,0 +1,11 @@
+apiVersion: v2
+name: tpm-library-testing
+description: A Helm chart for testing tpm-library during CI
+type: application
+version: 0.1.0
+appVersion: 0.1.0
+
+dependencies:
+- name: tpm-library
+  version: ~0.1.0
+  repository: file://../../charts/tpm-library

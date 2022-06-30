@@ -1,0 +1,33 @@
+parameters:
+  chartPath: ''
+  chartName: ''
+  helmVersion: 3.8.1
+  registryName: ''
+  registryLogin: ''
+  registryPassword: ''
+
+steps:
+- bash: |
+    export DESIRED_VERSION=v${{ parameters.helmVersion }}
+    curl -sf https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 | bash
+    helm version
+  displayName: Install Helm
+
+- bash: |
+    helm package ${{ parameters.chartPath }}${{ parameters.chartName }} \
+      --version $(version_build_number) \
+      --app-version $(version_build_number) \
+      --destination $(Build.ArtifactStagingDirectory)
+  displayName: Package helm chart
+
+- bash: |
+    echo "Login to the ACR"
+
+    echo '${{ parameters.registryPassword }}' | helm registry login ${{ parameters.registryName }}.azurecr.io \
+      --username ${{ parameters.registryLogin }} \
+      --password-stdin
+
+    echo "Push chart to ACR as OCI artifact"
+    
+    helm push $(Build.ArtifactStagingDirectory)/${{ parameters.chartName }}-$(version_build_number).tgz oci://${{ parameters.registryName }}.azurecr.io/helm
+  displayName: 'Push chart to azure container registry as OCI artifact'
